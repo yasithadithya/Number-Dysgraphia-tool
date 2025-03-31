@@ -16,7 +16,7 @@ const DrawingCanvas = React.forwardRef((props, ref) => {
     setContext(ctx);
   }, []);
 
-  // Expose methods to the parent component
+  // Expose methods to parent via ref
   React.useImperativeHandle(ref, () => ({
     getImageData: () => canvasRef.current.toDataURL('image/png'),
     clearCanvas: () => {
