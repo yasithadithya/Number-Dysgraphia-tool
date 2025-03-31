@@ -1,0 +1,15 @@
+.question-card {
+    border: 1px solid #ccc;
+    padding: 16px;
+    margin-bottom: 16px;
+    border-radius: 4px;
+  }
+  
+  .question-card-buttons {
+    margin-top: 8px;
+  }
+  
+  .question-card-buttons button {
+    margin-right: 8px;
+  }
+  
