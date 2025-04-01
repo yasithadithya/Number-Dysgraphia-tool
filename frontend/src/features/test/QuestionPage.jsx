@@ -38,9 +38,11 @@ const QuestionPage = () => {
     const imageData = canvasRef.current.getImageData();
     await handleSubmitAnswer(question.id, imageData);
     if (questionIndex < questions.length - 1) {
+      canvasRef.current.clearCanvas();
       const nextQuestionId = questions[questionIndex + 1].id;
       navigate(`/test/question/${nextQuestionId}`);
     } else {
+      //canvasRef.current.clearCanvas();
       navigate('/test/results');
     }
   };
