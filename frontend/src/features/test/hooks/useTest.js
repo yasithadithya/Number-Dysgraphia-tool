@@ -1,3 +1,4 @@
+// src/features/test/hooks/useTest.js
 import { useState, useEffect } from 'react';
 import { getTestQuestions, submitAnswer } from '../testService';
 
@@ -6,10 +7,19 @@ const useTest = () => {
   const [answers, setAnswers] = useState({});
   const [results, setResults] = useState({});
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
+  // Load questions from backend
   useEffect(() => {
-    const qs = getTestQuestions();
-    setQuestions(qs);
+    const fetchQuestions = async () => {
+      try {
+        const qs = await getTestQuestions();
+        setQuestions(qs);
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+    fetchQuestions();
   }, []);
 
   const handleSubmitAnswer = async (questionId, imageData) => {
@@ -17,7 +27,7 @@ const useTest = () => {
     try {
       const response = await submitAnswer(questionId, imageData);
       setAnswers((prev) => ({ ...prev, [questionId]: imageData }));
-      setResults((prev) => ({ ...prev, [questionId]: response.status }));
+      setResults((prev) => ({ ...prev, [questionId]: 'success' }));
     } catch (error) {
       console.error('Error submitting answer:', error);
       setResults((prev) => ({ ...prev, [questionId]: 'error' }));
@@ -31,6 +41,7 @@ const useTest = () => {
     answers,
     results,
     loading,
+    error,
     handleSubmitAnswer,
   };
 };

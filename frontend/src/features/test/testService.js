@@ -1,28 +1,26 @@
-// Provides the test questions and simulates answer submission.
+// src/features/test/testService.js
 
-export const getTestQuestions = () => {
-    const questions = [];
-    for (let i = 1; i <= 5; i++) {
-      questions.push({
-        id: i,
-        prompt: `Please write the number ${i}`,
-      });
-    }
-    // Extra question for number 21
-    questions.push({
-      id: 21,
-      prompt: `Please write the number 21`,
-    });
-    return questions;
-  };
-  
-  export const submitAnswer = async (questionId, imageData) => {
-    // In a real app, you would send a POST request to your backend.
-    console.log(`Submitted answer for question ${questionId}:`, imageData);
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({ questionId, status: 'success' });
-      }, 500);
-    });
-  };
-  
+// Load questions from backend
+export const getTestQuestions = async () => {
+  const response = await fetch('http://localhost:5000/api/questions');
+  if (!response.ok) {
+    throw new Error('Failed to load questions');
+  }
+  const data = await response.json();
+  // Assuming backend response is { success: true, data: questions }
+  return data.data;
+};
+
+// Submit answer (with imageData) to backend
+export const submitAnswer = async (questionId, imageData) => {
+  const response = await fetch(`http://localhost:5000/api/submissions/${questionId}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ imageData }), // add userId if needed
+  });
+  if (!response.ok) {
+    throw new Error('Failed to submit answer');
+  }
+  const data = await response.json();
+  return data.data;
+};
