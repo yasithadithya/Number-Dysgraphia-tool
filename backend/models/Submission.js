@@ -12,6 +12,16 @@ const SubmissionSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  // Time taken in milliseconds to answer the question
+  timeTaken: {
+    type: Number,
+    required: true,
+  },
+  // Number of times the student cleared the canvas during the question
+  clearCount: {
+    type: Number,
+    default: 0,
+  },
   // Optional: track who submitted
   userId: {
     type: String,

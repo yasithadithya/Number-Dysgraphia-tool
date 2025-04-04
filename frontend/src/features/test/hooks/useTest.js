@@ -4,12 +4,13 @@ import { getTestQuestions, submitAnswer } from '../testService';
 
 const useTest = () => {
   const [questions, setQuestions] = useState([]);
+  // We'll store answers as an object keyed by question id
   const [answers, setAnswers] = useState({});
   const [results, setResults] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Load questions from backend
+  // Load questions from backend on mount
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
@@ -22,11 +23,12 @@ const useTest = () => {
     fetchQuestions();
   }, []);
 
-  const handleSubmitAnswer = async (questionId, imageData) => {
+  // Submit answer data (including imageData, timeTaken, clearCount)
+  const handleSubmitAnswer = async (questionId, answerData) => {
     setLoading(true);
     try {
-      const response = await submitAnswer(questionId, imageData);
-      setAnswers((prev) => ({ ...prev, [questionId]: imageData }));
+      await submitAnswer(questionId, answerData);
+      setAnswers((prev) => ({ ...prev, [questionId]: answerData }));
       setResults((prev) => ({ ...prev, [questionId]: 'success' }));
     } catch (error) {
       console.error('Error submitting answer:', error);
