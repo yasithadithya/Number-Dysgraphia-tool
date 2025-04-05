@@ -1,7 +1,7 @@
 const Submission = require('../models/Submission');
 const Question = require('../models/Question');
+const { evaluateSubmission } = require('../MLModel/mlModel');
 
-// Create a submission for a specific question
 exports.createSubmission = async (req, res) => {
   try {
     const { questionId } = req.params;
@@ -13,41 +13,25 @@ exports.createSubmission = async (req, res) => {
       return res.status(404).json({ success: false, message: 'Question not found' });
     }
 
+    // Evaluate the submission using the pre-trained MNIST model.
+    // Assuming question.correctAnswer contains the expected digit as a string.
+    const expectedDigit = question.correctAnswer;
+    const evaluation = await evaluateSubmission(imageData, expectedDigit);
+
     const submission = new Submission({
       question: questionId,
       imageData,
       timeTaken,
       clearCount,
       userId,
+      predictedDigit: evaluation.predictedDigit,
+      isCorrect: evaluation.isCorrect,
     });
     await submission.save();
 
     return res.status(201).json({ success: true, data: submission });
   } catch (error) {
     console.error('Error creating submission:', error);
-    return res.status(500).json({ success: false, message: 'Server error' });
-  }
-};
-
-// Get submissions for a specific question
-exports.getSubmissionsByQuestion = async (req, res) => {
-  try {
-    const { questionId } = req.params;
-    const submissions = await Submission.find({ question: questionId }).populate('question');
-    return res.status(200).json({ success: true, data: submissions });
-  } catch (error) {
-    console.error('Error fetching submissions:', error);
-    return res.status(500).json({ success: false, message: 'Server error' });
-  }
-};
-
-// New: Get all submissions (populating the question data)
-exports.getAllSubmissions = async (req, res) => {
-  try {
-    const submissions = await Submission.find({}).populate('question');
-    return res.status(200).json({ success: true, data: submissions });
-  } catch (error) {
-    console.error('Error fetching all submissions:', error);
     return res.status(500).json({ success: false, message: 'Server error' });
   }
 };

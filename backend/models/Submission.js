@@ -1,4 +1,3 @@
-// models/Submission.js
 const mongoose = require('mongoose');
 
 const SubmissionSchema = new mongoose.Schema({
@@ -12,7 +11,7 @@ const SubmissionSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  // Time taken in milliseconds to answer the question
+  // Time taken in milliseconds
   timeTaken: {
     type: Number,
     required: true,
@@ -30,6 +29,13 @@ const SubmissionSchema = new mongoose.Schema({
   submittedAt: {
     type: Date,
     default: Date.now,
+  },
+  // ML evaluation fields:
+  predictedDigit: {
+    type: String,
+  },
+  isCorrect: {
+    type: Boolean,
   },
 });
 
