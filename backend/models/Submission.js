@@ -1,3 +1,4 @@
+// models/Submission.js
 const mongoose = require('mongoose');
 
 const SubmissionSchema = new mongoose.Schema({
@@ -6,22 +7,18 @@ const SubmissionSchema = new mongoose.Schema({
     ref: 'Question',
     required: true,
   },
-  // Storing base64 image data
   imageData: {
     type: String,
     required: true,
   },
-  // Time taken in milliseconds
   timeTaken: {
     type: Number,
     required: true,
   },
-  // Number of times the student cleared the canvas during the question
   clearCount: {
     type: Number,
     default: 0,
   },
-  // Optional: track who submitted
   userId: {
     type: String,
     required: false,
@@ -30,7 +27,6 @@ const SubmissionSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  // ML evaluation fields:
   predictedDigit: {
     type: String,
   },

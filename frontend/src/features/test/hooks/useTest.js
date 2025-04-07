@@ -1,10 +1,8 @@
-// src/features/test/hooks/useTest.js
 import { useState, useEffect } from 'react';
 import { getTestQuestions, submitAnswer } from '../testService';
 
 const useTest = () => {
   const [questions, setQuestions] = useState([]);
-  // We'll store answers as an object keyed by question id
   const [answers, setAnswers] = useState({});
   const [results, setResults] = useState({});
   const [loading, setLoading] = useState(false);
@@ -23,7 +21,6 @@ const useTest = () => {
     fetchQuestions();
   }, []);
 
-  // Submit answer data (including imageData, timeTaken, clearCount)
   const handleSubmitAnswer = async (questionId, answerData) => {
     setLoading(true);
     try {

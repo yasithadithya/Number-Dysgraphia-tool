@@ -1,4 +1,4 @@
+/* src/components/Canvas/DrawingCanvas.css */
 .drawing-canvas {
-  border: 1px solid #000;
-  touch-action: none; /* Prevents default scrolling on touch devices */
+  touch-action: none;
 }
